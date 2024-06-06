@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/inscription/inscription.dart';
 
 class AuthentificationPage extends StatelessWidget {
   @override
@@ -9,14 +10,16 @@ class AuthentificationPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 80), // Ajustez la valeur de top selon votre préférence
+            padding: const EdgeInsets.only(
+                top: 80), // Ajustez la valeur de top selon votre préférence
             child: Text(
               "EventHub",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 60, // Taille de la police
                 fontWeight: FontWeight.bold, // Police en gras
-                fontFamily: 'Arial', // Remplacez "VotrePolice" par le nom de votre police
+                fontFamily:
+                    'Arial', // Remplacez "VotrePolice" par le nom de votre police
               ),
             ),
           ),
@@ -27,13 +30,14 @@ class AuthentificationPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                     child: TextFormField(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
-                        ), 
-                        labelText: "Email", 
+                        ),
+                        labelText: "Email",
                         labelStyle: TextStyle(
                           color: Colors.white,
                         ),
@@ -47,7 +51,8 @@ class AuthentificationPage extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                     child: TextFormField(
                       obscureText: true,
                       decoration: InputDecoration(
@@ -68,25 +73,29 @@ class AuthentificationPage extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (true == true) {
-                          // Navigate the user to the Home page
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Please fill input')),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        textStyle: TextStyle(fontSize: 20, color: Colors.black),
-                        minimumSize: Size(double.infinity, 60), // Taille du texte du bouton
-                        padding: EdgeInsets.symmetric(vertical: 18), 
-                        backgroundColor: Colors.white,// Ajustez la hauteur du bouton
-                        shape: StadiumBorder(),// Autres propriétés de style que vous pouvez spécifier
-                      ),
-                      child: const Text('Login'),
+                    padding: const EdgeInsets.all(8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            // Add your onPressed code here!
+                          },
+                          child: Text('Login'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Redirect to the registration page
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => InscriptionPage(),
+                              ),
+                            );
+                          },
+                          child: Text('Sign Up'),
+                        ),
+                      ],
                     ),
                   ),
                 ],

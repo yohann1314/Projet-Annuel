@@ -168,7 +168,7 @@ class Event {
 class EventListView extends StatelessWidget {
   final List<Event> events = [
     Event(
-      title: "Festival EVENTHUB",
+      title: "EVENTHUB - Festival",
       description: "Description de l'événement",
       date: "Jeudi 18 Avril 2024",
       location: "10 Rue Réné Viviani 44000 Nantes",
@@ -177,7 +177,7 @@ class EventListView extends StatelessWidget {
       artistImageUrl: "https://static.wixstatic.com/media/ae47ce_2c56c1bb1ad344c5a3b66bd798a76595~mv2.jpg/v1/fill/w_1394,h_797,al_c/ae47ce_2c56c1bb1ad344c5a3b66bd798a76595~mv2.jpg",
       artistName: "SDM",
       artistStyle: "Rap",
-      eventDetails: "Festival de la Musique Éclectique 🎵\n📅 25-27 Juillet 2024\n📍 Parc des Artistes, Villeville\n🎶 Trois jours de musique live - cuisine diverse - marché artisanal - et feux d'artifice tous les soirs à 22h.",
+      eventDetails: "Festival de la Musique Éclectique 🎵\n📅 25-27 Juillet 2024\n📍 Parc des Artistes, Villeville\n🎶 Trois jours de musique live - cuisine diverse - marché artisanal - et feux d'artifice tous les soirs à 22h.\n",
       eventProgram: "Concerts live tous les soirs de 18h à minuit\nZones de restauration variées\nMarché artisanal local\nAteliers de musique et activités pour tous les âges",
     ),
     Event(

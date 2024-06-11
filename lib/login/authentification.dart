@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projet_annuel/login/auth_service.dart';
 import '/inscription/inscription.dart';
+import 'package:projet_annuel/Home/home.dart';
 
 class AuthentificationPage extends StatefulWidget {
   @override
@@ -30,7 +31,7 @@ class _AuthentificationPageState extends State<AuthentificationPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => InscriptionPage(),
+            builder: (context) => MainApp(),
           ),
         );
       } else {

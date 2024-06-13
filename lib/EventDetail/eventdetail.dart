@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../ArtistPage/artistpage.dart';
+import '../ArtistPage/artistpage.dart'; // Assurez-vous d'importer correctement votre page d'artiste ici
 
 class EventDetailPage extends StatelessWidget {
   final String imageUrl;
@@ -30,9 +30,10 @@ class EventDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.white, // Couleur de fond de l'app bar
+        title: Text(title), // Titre de l'événement dans l'app bar
       ),
-      backgroundColor: const Color(0xFF12112D),
+      backgroundColor: const Color(0xFF12112D), // Couleur de fond de l'écran
       body: SingleChildScrollView(
         padding: EdgeInsets.all(12.0),
         child: Column(
@@ -81,7 +82,8 @@ class EventDetailPage extends StatelessWidget {
                     builder: (context) => ArtistPage(
                       artistImageUrl: artistImageUrl,
                       artistName: artistName,
-                      artistDescription: 'Description de l\'artiste...', // Ajoutez ici une vraie description
+                      artistStyle: artistStyle,
+                      artistDescription: 'Description de l\'artiste', // Ajoutez ici une vraie description de l'artiste
                       artistEvents: [], // Ajoutez ici la liste des événements de l'artiste
                       similarEvents: [], // Ajoutez ici la liste des événements similaires
                     ),

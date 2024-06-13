@@ -2,99 +2,106 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../EventDetail/eventdetail.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MainApp());
+  runApp(const MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Nantes'),
-          titleTextStyle: const TextStyle(
-            fontSize: 29.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            fontFamily: 'InknutAntiqua',
+      home: MainApp(),
+    );
+  }
+}
+
+class MainApp extends StatelessWidget {
+  MainApp({Key? key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Nantes'),
+        titleTextStyle: const TextStyle(
+          fontSize: 29.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          fontFamily: 'InknutAntiqua',
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.location_on, color: Colors.white),
+            onPressed: () {
+              print('location');
+            },
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.location_on, color: Colors.white),
-              onPressed: () {
-                print('location');
-              },
-            ),
-          ],
-          backgroundColor: const Color(0xFF12112D),
-        ),
+        ],
         backgroundColor: const Color(0xFF12112D),
-        body: Column(
-          children: [
-            SizedBox(
-              height: 70,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  IconWithText(
-                    icon: Icons.event,
-                    text: 'Ce soir',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.new_releases,
-                    text: 'Nouveauté',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.festival,
-                    text: 'Festival',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.favorite,
-                    text: 'Favoris',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.local_library,
-                    text: 'Culture',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.menu,
-                    text: 'Autre',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                ],
-              ),
+      ),
+      backgroundColor: const Color(0xFF12112D),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 70,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: const [
+                IconWithText(
+                  icon: Icons.event,
+                  text: 'Ce soir',
+                  fontFamily: 'VotrePolice',
+                  backgroundColor: Color(0x28C8C8C8),
+                ),
+                SizedBox(width: 20),
+                IconWithText(
+                  icon: Icons.new_releases,
+                  text: 'Nouveauté',
+                  fontFamily: 'VotrePolice',
+                  backgroundColor: Color(0x28C8C8C8),
+                ),
+                SizedBox(width: 20),
+                IconWithText(
+                  icon: Icons.festival,
+                  text: 'Festival',
+                  fontFamily: 'VotrePolice',
+                  backgroundColor: Color(0x28C8C8C8),
+                ),
+                SizedBox(width: 20),
+                IconWithText(
+                  icon: Icons.favorite,
+                  text: 'Favoris',
+                  fontFamily: 'VotrePolice',
+                  backgroundColor: Color(0x28C8C8C8),
+                ),
+                SizedBox(width: 20),
+                IconWithText(
+                  icon: Icons.local_library,
+                  text: 'Culture',
+                  fontFamily: 'VotrePolice',
+                  backgroundColor: Color(0x28C8C8C8),
+                ),
+                SizedBox(width: 20),
+                IconWithText(
+                  icon: Icons.menu,
+                  text: 'Autre',
+                  fontFamily: 'VotrePolice',
+                  backgroundColor: Color(0x28C8C8C8),
+                ),
+                SizedBox(width: 20),
+              ],
             ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: EventListView(),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 20),
+          Expanded(
+            child: EventListView(),
+          ),
+        ],
       ),
     );
   }
@@ -199,11 +206,12 @@ class IconWithText extends StatelessWidget {
   final Color backgroundColor;
 
   const IconWithText({
+    Key? key,
     required this.icon,
     required this.text,
     required this.fontFamily,
     required this.backgroundColor,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +241,4 @@ class IconWithText extends StatelessWidget {
     );
   }
 }
-
-
-
 

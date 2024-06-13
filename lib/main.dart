@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:projet_annuel/inscription/inscription.dart';
 import 'login/authentification.dart';
+import 'testeEventPage/event_page.dart'; // Assurez-vous de pointer correctement vers votre page principale
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

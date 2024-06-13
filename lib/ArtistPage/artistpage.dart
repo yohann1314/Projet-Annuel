@@ -12,7 +12,7 @@ class ArtistPage extends StatelessWidget {
     required this.artistName,
     required this.artistDescription,
     required this.artistEvents,
-    required this.similarEvents,
+    required this.similarEvents, required String artistStyle,
   });
 
   @override

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../EventDetail/eventdetail.dart';
+import '../EventDetail/eventdetail.dart'; // Assurez-vous que le chemin est correct
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -129,59 +129,84 @@ class EventListView extends StatelessWidget {
             final title = event['title'] ?? '';
             final date = event['date'] ?? '';
             final location = event['location'] ?? '';
+            final artistId = event['artistId'] ?? ''; // Nouvelle ligne pour récupérer l'artistId
+            final eventDetail = event['eventDetail'] ?? '';
+            final eventProgram = event['eventProgram'] ?? '';
 
-            return Container(
-              margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              padding: const EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: Image.network(
-                      imageUrl,
-                      height: 250,
-                      fit: BoxFit.cover,
+            return InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EventDetailPage(
+                      imageUrl: imageUrl,
+                      style: style,
+                      title: title,
+                      date: date,
+                      location: location,
+                      artistId: artistId, // Passer artistId à la page de détails
+                      eventDetail: eventDetail,
+                      eventProgram: eventProgram,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    style,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15.0,
-                    ),
+                );
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                padding: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.08),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.2),
                   ),
-                  Text(
-                    title,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.network(
+                        imageUrl,
+                        height: 250,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4.0),
-                  Text(
-                    date,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.0,
+                    const SizedBox(height: 10),
+                    Text(
+                      style,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.0,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4.0),
-                  Text(
-                    location,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.0,
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4.0),
-                ],
+                    const SizedBox(height: 4.0),
+                    Text(
+                      date,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.0,
+                      ),
+                    ),
+                    const SizedBox(height: 4.0),
+                    Text(
+                      location,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.0,
+                      ),
+                    ),
+                    const SizedBox(height: 4.0),
+                  ],
+                ),
               ),
             );
           },
@@ -233,7 +258,3 @@ class IconWithText extends StatelessWidget {
     );
   }
 }
-
-
-
-

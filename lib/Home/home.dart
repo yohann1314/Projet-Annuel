@@ -1,100 +1,181 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:projet_annuel/Carte/carte.dart';
+import 'package:projet_annuel/Profil/profil.dart';
+import 'package:projet_annuel/Recherche/recherche.dart';
 import '../EventDetail/eventdetail.dart'; // Assurez-vous que le chemin est correct
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(const MainApp());
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({Key? key}) : super(key: key);
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  static List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(),  // Utiliser HomeScreen au lieu de HomePage
+    RecherchePage(),
+    CartePage(),
+    ProfilPage(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Nantes'),
-          titleTextStyle: const TextStyle(
-            fontSize: 29.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            fontFamily: 'InknutAntiqua',
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Nantes'),
+        titleTextStyle: const TextStyle(
+          fontSize: 29.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          fontFamily: 'InknutAntiqua',
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.location_on, color: Colors.white),
+            onPressed: () {
+              print('location');
+            },
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.location_on, color: Colors.white),
-              onPressed: () {
-                print('location');
-              },
-            ),
-          ],
-          backgroundColor: const Color(0xFF12112D),
-        ),
+        ],
         backgroundColor: const Color(0xFF12112D),
-        body: Column(
-          children: [
-            SizedBox(
-              height: 70,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  IconWithText(
-                    icon: Icons.event,
-                    text: 'Ce soir',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.new_releases,
-                    text: 'Nouveauté',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.festival,
-                    text: 'Festival',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.favorite,
-                    text: 'Favoris',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.local_library,
-                    text: 'Culture',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.menu,
-                    text: 'Autre',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                ],
+      ),
+      backgroundColor: const Color(0xFF12112D),
+      body: _widgetOptions.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color(0xFF12112D),
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Accueil',
+            backgroundColor: Color(0xFF12112D),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Rechercher',
+            backgroundColor: Color(0xFF12112D),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Carte',
+            backgroundColor: Color(0xFF12112D),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profil',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        unselectedItemColor: Colors.white,
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 70,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: const [
+              IconWithText(
+                icon: Icons.event,
+                text: 'Ce soir',
+                fontFamily: 'VotrePolice',
+                backgroundColor: Color(0x28C8C8C8),
               ),
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: EventListView(),
-            ),
-          ],
+              SizedBox(width: 20),
+              IconWithText(
+                icon: Icons.new_releases,
+                text: 'Nouveauté',
+                fontFamily: 'VotrePolice',
+                backgroundColor: Color(0x28C8C8C8),
+              ),
+              SizedBox(width: 20),
+              IconWithText(
+                icon: Icons.festival,
+                text: 'Festival',
+                fontFamily: 'VotrePolice',
+                backgroundColor: Color(0x28C8C8C8),
+              ),
+              SizedBox(width: 20),
+              IconWithText(
+                icon: Icons.favorite,
+                text: 'Favoris',
+                fontFamily: 'VotrePolice',
+                backgroundColor: Color(0x28C8C8C8),
+              ),
+              SizedBox(width: 20),
+              IconWithText(
+                icon: Icons.local_library,
+                text: 'Culture',
+                fontFamily: 'VotrePolice',
+                backgroundColor: Color(0x28C8C8C8),
+              ),
+              SizedBox(width: 20),
+              IconWithText(
+                icon: Icons.menu,
+                text: 'Autre',
+                fontFamily: 'VotrePolice',
+                backgroundColor: Color(0x28C8C8C8),
+              ),
+              SizedBox(width: 20),
+            ],
+          ),
         ),
+        const SizedBox(height: 20),
+        Expanded(
+          child: EventListView(),
+        ),
+      ],
+    );
+  }
+}
+
+class SearchScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text(
+        'Rechercher',
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+}
+
+class FavoritesScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text(
+        'Carte',
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+}
+
+class ProfileScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text(
+        'Profil',
+        style: TextStyle(color: Colors.white),
       ),
     );
   }
@@ -215,7 +296,6 @@ class EventListView extends StatelessWidget {
     );
   }
 }
-
 
 class IconWithText extends StatelessWidget {
   final IconData icon;

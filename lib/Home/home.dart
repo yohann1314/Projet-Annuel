@@ -14,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),  // Utiliser HomeScreen au lieu de HomePage
+    HomeScreen(), // Utiliser HomeScreen au lieu de HomePage
     RecherchePage(),
     CartePage(),
     ProfilPage(),
@@ -29,24 +29,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Nantes'),
-        titleTextStyle: const TextStyle(
-          fontSize: 29.0,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-          fontFamily: 'InknutAntiqua',
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.location_on, color: Colors.white),
-            onPressed: () {
-              print('location');
-            },
-          ),
-        ],
-        backgroundColor: const Color(0xFF12112D),
-      ),
       backgroundColor: const Color(0xFF12112D),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
@@ -86,6 +68,24 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        AppBar(
+          title: const Text('Nantes'),
+          titleTextStyle: const TextStyle(
+            fontSize: 29.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontFamily: 'InknutAntiqua',
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.location_on, color: Colors.white),
+              onPressed: () {
+                print('location');
+              },
+            ),
+          ],
+          backgroundColor: const Color(0xFF12112D),
+        ),
         SizedBox(
           height: 70,
           child: ListView(
@@ -338,3 +338,4 @@ class IconWithText extends StatelessWidget {
     );
   }
 }
+

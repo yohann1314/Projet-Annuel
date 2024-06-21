@@ -8,6 +8,8 @@ class InscriptionPage extends StatefulWidget {
 }
 
 class _InscriptionPageState extends State<InscriptionPage> {
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -21,10 +23,17 @@ class _InscriptionPageState extends State<InscriptionPage> {
         _errorMessage = null;
       });
 
+      final firstName = _firstNameController.text;
+      final lastName = _lastNameController.text;
       final email = _emailController.text;
       final password = _passwordController.text;
 
-      final result = await AuthService().registration(email: email, password: password);
+      final result = await AuthService().registration(
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+      );
 
       if (result == 'Success') {
         Navigator.pushReplacement(
@@ -47,14 +56,10 @@ class _InscriptionPageState extends State<InscriptionPage> {
     return Scaffold(
       backgroundColor: Color(0xFF12112D),
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Inscription',
-          style: TextStyle(color: Colors.black),
-        ),
-        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Color(0xFF12112D),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
+          color: Colors.white,
           onPressed: () {
             Navigator.pop(context);
           },
@@ -62,13 +67,61 @@ class _InscriptionPageState extends State<InscriptionPage> {
       ),
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 50),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
           child: Form(
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: _firstNameController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      labelText: "Prénom",
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      filled: true,
+                      fillColor: Color(0xFF12112D),
+                    ),
+                    style: TextStyle(color: Colors.white),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez entrer votre prénom';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    controller: _lastNameController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      labelText: "Nom",
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      filled: true,
+                      fillColor: Color(0xFF12112D),
+                    ),
+                    style: TextStyle(color: Colors.white),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez entrer votre nom';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: TextFormField(
@@ -81,6 +134,8 @@ class _InscriptionPageState extends State<InscriptionPage> {
                       labelStyle: TextStyle(
                         color: Colors.white,
                       ),
+                      filled: true,
+                      fillColor: Color(0xFF12112D),
                     ),
                     style: TextStyle(color: Colors.white),
                     validator: (value) {
@@ -104,6 +159,8 @@ class _InscriptionPageState extends State<InscriptionPage> {
                       labelStyle: TextStyle(
                         color: Colors.white,
                       ),
+                      filled: true,
+                      fillColor: Color(0xFF12112D),
                     ),
                     style: TextStyle(color: Colors.white),
                     validator: (value) {
@@ -129,7 +186,10 @@ class _InscriptionPageState extends State<InscriptionPage> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                     ),
-                    child: _isLoading ? CircularProgressIndicator() : Text('S\'inscrire'),
+                    child: _isLoading ? CircularProgressIndicator() : Text(
+                      'S\'inscrire',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                 ),
               ],

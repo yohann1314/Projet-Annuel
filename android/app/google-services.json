@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "571564010123",
+    "project_id": "projetannuel-f2628",
+    "storage_bucket": "projetannuel-f2628.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571564010123:android:0acaa0e82d59d082d4028e",
+        "android_client_info": {
+          "package_name": "com.example.projet_annuel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "571564010123-il5l2ol5jja7sjtq301piek5lilonp61.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC35jn-Pk_SFkyr4mKqXOwQprwvPUtngtE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "571564010123-il5l2ol5jja7sjtq301piek5lilonp61.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "571564010123-uq865909moco6o6i5js6rq32kudmotbc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.projetAnnuel"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

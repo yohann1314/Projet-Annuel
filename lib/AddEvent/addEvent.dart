@@ -69,7 +69,7 @@ class _AddEventPageState extends State<AddEventPage> {
 
         if (artistSnapshot.docs.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Artiste non trouvé')),
+            const SnackBar(content: Text('Artiste non trouvé')),
           );
           setState(() {
             _isUploading = false;
@@ -142,9 +142,12 @@ class _AddEventPageState extends State<AddEventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ajouter un événement'),
+        title: const Text('Ajouter un événement', style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color(0xFF12112D),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: Padding(
+      body: Container(
+        color: const Color(0xFF12112D),
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -152,7 +155,8 @@ class _AddEventPageState extends State<AddEventPage> {
             children: [
               TextFormField(
                 controller: _artistNameController,
-                decoration: InputDecoration(labelText: 'Nom de l\'artiste'),
+                decoration: InputDecoration(labelText: 'Nom de l\'artiste', labelStyle: TextStyle(color: Colors.white)),
+                style: TextStyle(color: Colors.white),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer le nom de l\'artiste';
@@ -162,7 +166,8 @@ class _AddEventPageState extends State<AddEventPage> {
               ),
               TextFormField(
                 controller: _dateController,
-                decoration: InputDecoration(labelText: 'Date'),
+                decoration: InputDecoration(labelText: 'Date', labelStyle: TextStyle(color: Colors.white)),
+                style: TextStyle(color: Colors.white),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer la date';
@@ -172,7 +177,8 @@ class _AddEventPageState extends State<AddEventPage> {
               ),
               TextFormField(
                 controller: _descriptionController,
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: InputDecoration(labelText: 'Description', labelStyle: TextStyle(color: Colors.white)),
+                style: TextStyle(color: Colors.white),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer la description';
@@ -180,29 +186,20 @@ class _AddEventPageState extends State<AddEventPage> {
                   return null;
                 },
               ),
-              TextFormField(
+              SizedBox(height: 16),
+              _buildLabeledTextArea(
                 controller: _eventDetailController,
-                decoration: InputDecoration(labelText: 'Détails de l\'événement'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer les détails de l\'événement';
-                  }
-                  return null;
-                },
+                label: 'Détails de l\'événement',
               ),
-              TextFormField(
+              SizedBox(height: 16),
+              _buildLabeledTextArea(
                 controller: _eventProgramController,
-                decoration: InputDecoration(labelText: 'Programme de l\'événement'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer le programme de l\'événement';
-                  }
-                  return null;
-                },
+                label: 'Programme de l\'événement',
               ),
               TextFormField(
                 controller: _locationController,
-                decoration: InputDecoration(labelText: 'Adresse'),
+                decoration: InputDecoration(labelText: 'Adresse', labelStyle: TextStyle(color: Colors.white)),
+                style: TextStyle(color: Colors.white),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer l\'adresse';
@@ -212,7 +209,8 @@ class _AddEventPageState extends State<AddEventPage> {
               ),
               TextFormField(
                 controller: _styleController,
-                decoration: InputDecoration(labelText: 'Style'),
+                decoration: InputDecoration(labelText: 'Style', labelStyle: TextStyle(color: Colors.white)),
+                style: TextStyle(color: Colors.white),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer le style';
@@ -222,7 +220,8 @@ class _AddEventPageState extends State<AddEventPage> {
               ),
               TextFormField(
                 controller: _titleController,
-                decoration: InputDecoration(labelText: 'Titre'),
+                decoration: InputDecoration(labelText: 'Titre', labelStyle: TextStyle(color: Colors.white)),
+                style: TextStyle(color: Colors.white),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer le titre';
@@ -233,23 +232,60 @@ class _AddEventPageState extends State<AddEventPage> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _pickImage,
-                child: Text('Choisir une image'),
+                child: const Text('Choisir une image'),
               ),
               SizedBox(height: 20),
               _imageFile == null
-                  ? Text('Aucune image sélectionnée')
+                  ? const Text('Aucune image sélectionnée', style: TextStyle(color: Colors.white))
                   : Image.file(_imageFile!),
               SizedBox(height: 20),
               _isUploading
-                  ? Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator())
                   : ElevatedButton(
                 onPressed: _addEvent,
-                child: Text('Ajouter l\'événement'),
+                child: const Text('Ajouter l\'événement'),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildLabeledTextArea({
+    required TextEditingController controller,
+    required String label,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(color: Colors.white),
+        ),
+        SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white),
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          child: TextFormField(
+            controller: controller,
+            maxLines: 5, // Vous pouvez ajuster le nombre de lignes ici
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(8.0),
+              border: InputBorder.none,
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Veuillez entrer les détails';
+              }
+              return null;
+            },
+          ),
+        ),
+      ],
     );
   }
 }

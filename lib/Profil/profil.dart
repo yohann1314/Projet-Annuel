@@ -42,6 +42,24 @@ class ProfilPage extends StatelessWidget {
                   date: '2024-08-15',
                   location: 'Venue 2',
                 ),
+                Event(
+                  imageUrl: 'https://www.example.com/event2.jpg',
+                  title: 'Concert 3',
+                  date: '2024-08-15',
+                  location: 'Venue 2',
+                ),
+                Event(
+                  imageUrl: 'https://www.example.com/event2.jpg',
+                  title: 'Concert 4',
+                  date: '2024-08-15',
+                  location: 'Venue 2',
+                ),
+                Event(
+                  imageUrl: 'https://www.example.com/event2.jpg',
+                  title: 'Concert 5',
+                  date: '2024-08-15',
+                  location: 'Venue 2',
+                ),
               ],
             );
           } else {
@@ -73,7 +91,7 @@ class ProfilPage extends StatelessWidget {
   }
 }
 
-class UserProfilePage extends StatelessWidget {
+class UserProfilePage extends StatefulWidget {
   final String userName;
   final String userFirstName;
   final List<String> friends;
@@ -91,6 +109,24 @@ class UserProfilePage extends StatelessWidget {
   });
 
   @override
+  _UserProfilePageState createState() => _UserProfilePageState();
+}
+
+class _UserProfilePageState extends State<UserProfilePage> {
+  bool isPro = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void updateProStatus(bool newProStatus) {
+    setState(() {
+      isPro = newProStatus;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF12112D),
@@ -102,17 +138,45 @@ class UserProfilePage extends StatelessWidget {
             children: [
               const SizedBox(height: 40),
               HeaderSection(
-                userFirstName: userFirstName,
-                userName: userName,
+                userFirstName: widget.userFirstName,
+                userName: widget.userName,
+                isPro: isPro,
+                onProStatusChanged: updateProStatus,
               ),
               const SizedBox(height: 18),
               const SectionsRow(),
               const SizedBox(height: 18),
-              PrepareSortiesWidget(friendsCount: 0), // Exemple avec 0 amis
-              const SizedBox(height: 20),
-              GroupesWidget(),
-              const SizedBox(height: 18),
-              SavedEventsSection(savedEvents: savedEvents),
+              if (!isPro) ...[
+                PrepareSortiesWidget(friendsCount: 0), // Exemple avec 0 amis
+                const SizedBox(height: 20),
+                GroupesWidget(),
+                const SizedBox(height: 18),
+                SavedEventsSection(savedEvents: widget.savedEvents)
+              ] else ...[
+                const SizedBox(height: 22),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Action pour ajouter un nouvel événement
+                      // (Vous pouvez implémenter cette action selon vos besoins)
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF9C3EAE),
+                        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                        minimumSize: Size(250, 60),
+                    ),
+
+                    child: Text('Creer un nouvel événement',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 22),
+                MyEventsSection(savedEvents: widget.savedEvents),
+              ],
             ],
           ),
         ),
@@ -124,11 +188,16 @@ class UserProfilePage extends StatelessWidget {
 class HeaderSection extends StatefulWidget {
   final String userFirstName;
   final String userName;
+  final bool isPro;
+  final Function(bool) onProStatusChanged;
 
   const HeaderSection({
     required this.userFirstName,
     required this.userName,
+    required this.isPro,
+    required this.onProStatusChanged,
   });
+
 
   @override
   _HeaderSectionState createState() => _HeaderSectionState();
@@ -136,13 +205,62 @@ class HeaderSection extends StatefulWidget {
 
 class _HeaderSectionState extends State<HeaderSection> {
   String? profileImageUrl;
+  bool isPro = false;
 
   @override
   void initState() {
     super.initState();
     fetchProfileImageUrl();
+    fetchProStatus();
   }
 
+  Future<void> fetchProStatus() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      try {
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+        if (userDoc.exists && userDoc['pro'] != null) {
+          setState(() {
+            isPro = userDoc['pro'];
+          });
+          widget.onProStatusChanged(isPro);  // Notify parent of initial status
+        } else {
+          throw 'Pro status not found';
+        }
+      } catch (e) {
+        print('Failed to fetch pro status: $e');
+      }
+    }
+  }
+
+  Future<void> updateProStatus(bool newProStatus) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      try {
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+          'pro': newProStatus,
+        });
+        setState(() {
+          isPro = newProStatus;
+        });
+        widget.onProStatusChanged(isPro);  // Notify parent of status change
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Vous etes passé.e en statut pro'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } catch (e) {
+        print('Failed to update pro status: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to update Pro status: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
   Future<void> fetchProfileImageUrl() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -263,11 +381,20 @@ class _HeaderSectionState extends State<HeaderSection> {
             ),
           ],
         ),
-        IconButton(
-          icon: const Icon(Icons.settings, color: Colors.white),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: isPro ? Colors.yellow : Colors.grey, // Couleur en or pour Pro, gris pour Standard
+          ),
           onPressed: () {
-            // Action to open settings
+            // Action pour changer le statut Pro
+            updateProStatus(!isPro); // Inverse le statut actuel
           },
+          child: Text(
+            isPro ? 'Pro' : 'Standard',
+            style: TextStyle(
+              color: Color(0xFF545367),
+            ),
+          ),
         ),
       ],
     );
@@ -699,4 +826,91 @@ void openEventDetail2(Event event, BuildContext context) {
       builder: (context) => EventDetailPage2(event: event),
     ),
   );
+}
+
+class MyEventsSection extends StatelessWidget {
+  final List<Event> savedEvents;
+
+  const MyEventsSection({required this.savedEvents});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Mes événements', // Changed title for pro users
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: "InriaSans",
+            fontSize: 18,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          height: 400,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: ListView(
+              scrollDirection: Axis.vertical,
+              children: savedEvents.map((event) {
+                return Card(
+                  color: Colors.black,
+                  child: ListTile(
+                    leading: Image.network(
+                      event.imageUrl,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
+                    title: Text(
+                      event.title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          event.date,
+                          style: const TextStyle(
+                            color: Color(0xFF9C3EAE),
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          event.location,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                    trailing: ElevatedButton(
+                      onPressed: () {
+                        // Action to see event details
+                        openEventDetail2(event, context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF9C3EAE),
+                      ),
+                      child: const Text(
+                        'Voir plus',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }

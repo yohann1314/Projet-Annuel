@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../AddEvent/addEvent.dart';
+
 
 void main() {
   runApp(const Profil());
@@ -499,6 +501,7 @@ class EventDetailPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            
             Image.network(
               event.imageUrl,
               width: 200,

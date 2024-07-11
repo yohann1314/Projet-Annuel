@@ -4,6 +4,7 @@ class ArtistPage extends StatelessWidget {
   final String artistImageUrl;
   final String artistName;
   final String artistDescription;
+  final String artistStyle;
   final List<Event> artistEvents;
   final List<Event> similarEvents;
 
@@ -11,6 +12,7 @@ class ArtistPage extends StatelessWidget {
     required this.artistImageUrl,
     required this.artistName,
     required this.artistDescription,
+    required this.artistStyle,
     required this.artistEvents,
     required this.similarEvents,
   });
@@ -29,57 +31,60 @@ class ArtistPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  ClipOval(
-                    child: Image.network(
-                      artistImageUrl,
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        artistName,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipOval(
+                      child: Image.network(
+                        artistImageUrl,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
                       ),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Action pour suivre l'artiste
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF9C3EAE), // Couleur de fond
-                        ),
-                        child: Text(
-                          'Suivre',
+                    ),
+                    SizedBox(width: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          artistName,
                           style: TextStyle(
                             color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        SizedBox(height: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Action pour suivre l'artiste
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF9C3EAE),
+                          ),
+                          child: Text(
+                            'Suivre',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 20),
               Text(
                 artistDescription,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.grey,
                   fontSize: 16,
                 ),
               ),
               SizedBox(height: 20),
-              Text(
+              const Text(
                 'Événements de l\'artiste',
                 style: TextStyle(
                   color: Colors.white,
@@ -95,7 +100,7 @@ class ArtistPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final event = artistEvents[index];
                   return Card(
-                    color: Colors.black,
+                    color: Colors.white,
                     child: ListTile(
                       leading: Image.network(
                         event.imageUrl,
@@ -105,7 +110,7 @@ class ArtistPage extends StatelessWidget {
                       ),
                       title: Text(
                         event.title,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
                         ),
@@ -115,14 +120,14 @@ class ArtistPage extends StatelessWidget {
                         children: [
                           Text(
                             event.date,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Color(0xFF9C3EAE),
                               fontSize: 16,
                             ),
                           ),
                           Text(
                             event.location,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                             ),
@@ -134,9 +139,9 @@ class ArtistPage extends StatelessWidget {
                           // Action pour voir les détails de l'événement
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF9C3EAE), // Couleur de fond
+                          backgroundColor: Color(0xFF9C3EAE),
                         ),
-                        child: Text(
+                        child: const Text(
                           'Détails',
                           style: TextStyle(
                             color: Colors.white,
@@ -147,8 +152,8 @@ class ArtistPage extends StatelessWidget {
                   );
                 },
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Événements similaires',
                 style: TextStyle(
                   color: Colors.white,
@@ -168,7 +173,7 @@ class ArtistPage extends StatelessWidget {
                       width: 150,
                       margin: EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(
-                        color: Color(0xFFEAB3F4),
+                        color: Colors.white.withOpacity(0.08),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
@@ -204,13 +209,6 @@ class ArtistPage extends StatelessWidget {
                               color: Colors.white,
                               fontSize: 14,
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              // Action pour ajouter l'événement aux favoris
-                            },
-                            icon: Icon(Icons.favorite_border),
-                            color: Colors.red,
                           ),
                         ],
                       ),

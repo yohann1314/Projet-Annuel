@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:projet_annuel/login/auth_service.dart';
-import '/inscription/inscription.dart';
-import 'package:projet_annuel/Home/home.dart';
+import '../inscription/inscription.dart'; // Assurez-vous d'importer correctement le fichier d'inscription
+import '../Home/home.dart'; // Assurez-vous d'importer correctement le fichier HomePage
+import '../login/auth_service.dart';
 
 class AuthentificationPage extends StatefulWidget {
   @override
@@ -31,7 +31,7 @@ class _AuthentificationPageState extends State<AuthentificationPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => MainApp(),
+            builder: (context) => HomePage(), // Redirection vers HomePage après connexion réussie
           ),
         );
       } else {

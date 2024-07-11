@@ -1,96 +1,298 @@
 import 'package:flutter/material.dart';
-import '../EventDetail/eventdetail.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:projet_annuel/Carte/carte.dart';
+import 'package:projet_annuel/Profil/profil.dart';
+import 'package:projet_annuel/Recherche/recherche.dart';
+import '../EventDetail/eventdetail.dart'; // Assurez-vous que le chemin est correct
 
-void main() {
-  runApp(const MainApp());
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({Key? key}) : super(key: key);
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  static List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(),  // Utiliser HomeScreen au lieu de HomePage
+    RecherchePage(),
+    CartePage(),
+    ProfilPage(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Nantes'),
-          titleTextStyle: const TextStyle(
-            fontSize: 29.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            fontFamily: 'InknutAntiqua',
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Nantes'),
+        titleTextStyle: const TextStyle(
+          fontSize: 29.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          fontFamily: 'InknutAntiqua',
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.location_on, color: Colors.white),
+            onPressed: () {
+              print('location');
+            },
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.location_on, color: Colors.white),
-              onPressed: () {
-                print('location');
-              },
-            ),
-          ],
-          backgroundColor: const Color(0xFF12112D),
-        ),
+        ],
         backgroundColor: const Color(0xFF12112D),
-        body: Column(
-          children: [
-            SizedBox(
-              height: 70,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  IconWithText(
-                    icon: Icons.event,
-                    text: 'Ce soir',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.new_releases,
-                    text: 'Nouveauté',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.festival,
-                    text: 'Festival',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.favorite,
-                    text: 'Favoris',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.local_library,
-                    text: 'Culture',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                  IconWithText(
-                    icon: Icons.menu,
-                    text: 'Autre',
-                    fontFamily: 'VotrePolice',
-                    backgroundColor: Color(0x28C8C8C8),
-                  ),
-                  SizedBox(width: 20),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: EventListView(),
-            ),
-          ],
-        ),
       ),
+      backgroundColor: const Color(0xFF12112D),
+      body: _widgetOptions.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color(0xFF12112D),
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Accueil',
+            backgroundColor: Color(0xFF12112D),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Rechercher',
+            backgroundColor: Color(0xFF12112D),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Carte',
+            backgroundColor: Color(0xFF12112D),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profil',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        unselectedItemColor: Colors.white,
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 70,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: const [
+              IconWithText(
+                icon: Icons.event,
+                text: 'Ce soir',
+                fontFamily: 'VotrePolice',
+                backgroundColor: Color(0x28C8C8C8),
+              ),
+              SizedBox(width: 20),
+              IconWithText(
+                icon: Icons.new_releases,
+                text: 'Nouveauté',
+                fontFamily: 'VotrePolice',
+                backgroundColor: Color(0x28C8C8C8),
+              ),
+              SizedBox(width: 20),
+              IconWithText(
+                icon: Icons.festival,
+                text: 'Festival',
+                fontFamily: 'VotrePolice',
+                backgroundColor: Color(0x28C8C8C8),
+              ),
+              SizedBox(width: 20),
+              IconWithText(
+                icon: Icons.favorite,
+                text: 'Favoris',
+                fontFamily: 'VotrePolice',
+                backgroundColor: Color(0x28C8C8C8),
+              ),
+              SizedBox(width: 20),
+              IconWithText(
+                icon: Icons.local_library,
+                text: 'Culture',
+                fontFamily: 'VotrePolice',
+                backgroundColor: Color(0x28C8C8C8),
+              ),
+              SizedBox(width: 20),
+              IconWithText(
+                icon: Icons.menu,
+                text: 'Autre',
+                fontFamily: 'VotrePolice',
+                backgroundColor: Color(0x28C8C8C8),
+              ),
+              SizedBox(width: 20),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+        Expanded(
+          child: EventListView(),
+        ),
+      ],
+    );
+  }
+}
+
+class SearchScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text(
+        'Rechercher',
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+}
+
+class FavoritesScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text(
+        'Carte',
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+}
+
+class ProfileScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text(
+        'Profil',
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+}
+
+class EventListView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('event').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return Center(child: Text('Une erreur est survenue'));
+        }
+
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return Center(child: Text('Pas d\'événements disponibles'));
+        }
+
+        List<DocumentSnapshot> events = snapshot.data!.docs;
+
+        return ListView.builder(
+          itemCount: events.length,
+          itemBuilder: (context, index) {
+            final event = events[index].data() as Map<String, dynamic>;
+            final imageUrl = event['imageUrl'] ?? '';
+            final style = event['style'] ?? '';
+            final title = event['title'] ?? '';
+            final date = event['date'] ?? '';
+            final location = event['location'] ?? '';
+            final artistId = event['artistId'] ?? ''; // Nouvelle ligne pour récupérer l'artistId
+            final eventDetail = event['eventDetail'] ?? '';
+            final eventProgram = event['eventProgram'] ?? '';
+
+            return InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EventDetailPage(
+                      imageUrl: imageUrl,
+                      style: style,
+                      title: title,
+                      date: date,
+                      location: location,
+                      artistId: artistId, // Passer artistId à la page de détails
+                      eventDetail: eventDetail,
+                      eventProgram: eventProgram,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                padding: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.08),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.2),
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.network(
+                        imageUrl,
+                        height: 250,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      style,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.0,
+                      ),
+                    ),
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4.0),
+                    Text(
+                      date,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.0,
+                      ),
+                    ),
+                    const SizedBox(height: 4.0),
+                    Text(
+                      location,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.0,
+                      ),
+                    ),
+                    const SizedBox(height: 4.0),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
@@ -133,177 +335,6 @@ class IconWithText extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class Event {
-  final String title;
-  final String description;
-  final String date;
-  final String location;
-  final String style;
-  final String imageUrl;
-  final String artistImageUrl;
-  final String artistName;
-  final String artistStyle;
-  final String eventDetails;
-  final String eventProgram;
-
-  Event({
-    required this.title,
-    required this.description,
-    required this.date,
-    required this.location,
-    required this.style,
-    required this.imageUrl,
-    required this.artistImageUrl,
-    required this.artistName,
-    required this.artistStyle,
-    required this.eventDetails,
-    required this.eventProgram,
-  });
-}
-
-class EventListView extends StatelessWidget {
-  final List<Event> events = [
-    Event(
-      title: "EVENTHUB - Festival",
-      description: "Description de l'événement",
-      date: "Jeudi 18 Avril 2024",
-      location: "10 Rue Réné Viviani 44000 Nantes",
-      style: "Populaire",
-      imageUrl: "https://th.bing.com/th/id/OIP.iRaLGvQGVuVVrX0kAmc9bgHaE8?rs=1&pid=ImgDetMain",
-      artistImageUrl: "https://static.wixstatic.com/media/ae47ce_2c56c1bb1ad344c5a3b66bd798a76595~mv2.jpg/v1/fill/w_1394,h_797,al_c/ae47ce_2c56c1bb1ad344c5a3b66bd798a76595~mv2.jpg",
-      artistName: "SDM",
-      artistStyle: "Rap",
-      eventDetails: "Festival de la Musique Éclectique 🎵\n📅 25-27 Juillet 2024\n📍 Parc des Artistes, Villeville\n🎶 Trois jours de musique live - cuisine diverse - marché artisanal - et feux d'artifice tous les soirs à 22h.\n",
-      eventProgram: "Concerts live tous les soirs de 18h à minuit\nZones de restauration variées\nMarché artisanal local\nAteliers de musique et activités pour tous les âges",
-    ),
-    Event(
-      title: "Autre événement",
-      description: "Description de l'événement",
-      date: "Vendredi 19 Avril 2024",
-      location: "20 Rue de Strasbourg 44000 Nantes",
-      style: "Festif",
-      imageUrl: "https://th.bing.com/th/id/OIP.tjLiPC5O-dBOqKk7SKh8NAAAAA?rs=1&pid=ImgDetMain",
-      artistImageUrl: "https://static.wixstatic.com/media/ae47ce_2c56c1bb1ad344c5a3b66bd798a76595~mv2.jpg/v1/fill/w_1394,h_797,al_c/ae47ce_2c56c1bb1ad344c5a3b66bd798a76595~mv2.jpg",
-      artistName: "Niska",
-      artistStyle: "Rap",
-      eventDetails: "Détails de l'événement",
-      eventProgram: "Programme de l'événement",
-    ),
-    Event(
-      title: "Autre événement",
-      description: "Description de l'événement",
-      date: "Vendredi 19 Avril 2024",
-      location: "20 Rue de Strasbourg 44000 Nantes",
-      style: "Festif",
-      imageUrl: "https://th.bing.com/th/id/OIP.tjLiPC5O-dBOqKk7SKh8NAAAAA?rs=1&pid=ImgDetMain",
-      artistImageUrl: "https://static.wixstatic.com/media/ae47ce_2c56c1bb1ad344c5a3b66bd798a76595~mv2.jpg/v1/fill/w_1394,h_797,al_c/ae47ce_2c56c1bb1ad344c5a3b66bd798a76595~mv2.jpg",
-      artistName: "Nom de l'artiste",
-      artistStyle: "Style de musique",
-      eventDetails: "Détails de l'événement",
-      eventProgram: "Programme de l'événement",
-    ),
-    Event(
-      title: "Autre événement",
-      description: "Description de l'événement",
-      date: "Vendredi 19 Avril 2024",
-      location: "20 Rue de Strasbourg 44000 Nantes",
-      style: "Festif",
-      imageUrl: "https://th.bing.com/th/id/OIP.tjLiPC5O-dBOqKk7SKh8NAAAAA?rs=1&pid=ImgDetMain",
-      artistImageUrl: "https://static.wixstatic.com/media/ae47ce_2c56c1bb1ad344c5a3b66bd798a76595~mv2.jpg/v1/fill/w_1394,h_797,al_c/ae47ce_2c56c1bb1ad344c5a3b66bd798a76595~mv2.jpg",
-      artistName: "Nom de l'artiste",
-      artistStyle: "Style de musique",
-      eventDetails: "Détails de l'événement",
-      eventProgram: "Programme de l'événement",
-    ),
-    // Ajoutez autant d'événements que vous le souhaitez
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: events.length,
-      itemBuilder: (context, index) {
-        final event = events[index];
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => EventDetailPage(
-                  imageUrl: event.imageUrl,
-                  style: event.style,
-                  title: event.title,
-                  date: event.date,
-                  location: event.location,
-                  artistImageUrl: event.artistImageUrl,
-                  artistName: event.artistName,
-                  artistStyle: event.artistStyle,
-                  eventDetails: event.eventDetails,
-                  eventProgram: event.eventProgram,
-                ),
-              ),
-            );
-          },
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-            padding: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10.0),
-                  child: Image.network(
-                    event.imageUrl,
-                    height: 250,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  event.style,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.0,
-                  ),
-                ),
-                Text(
-                  event.title,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4.0),
-                Text(
-                  event.date,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14.0,
-                  ),
-                ),
-                const SizedBox(height: 4.0),
-                Text(
-                  event.location,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14.0,
-                  ),
-                ),
-                const SizedBox(height: 4.0),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }

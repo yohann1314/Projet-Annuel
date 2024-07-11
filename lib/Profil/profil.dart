@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import '../AddEvent/addEvent.dart';
+
 
 class ProfilPage extends StatelessWidget {
   const ProfilPage({Key? key}) : super(key: key);
@@ -794,6 +796,7 @@ class EventDetailPage2 extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            
             Image.network(
               event.imageUrl,
               width: 200,
